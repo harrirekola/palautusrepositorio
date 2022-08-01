@@ -14,23 +14,22 @@ const App = () => {
   const [keyword, setNewKeyword] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [popup, setPopup] = useState(null)
+  
 
-  useEffect(() => {
-    personService
-    .getAll()
-    .then(response => {
-      setPersons(response.data)
+  const getPersons = () => {
+      personService
+      .getAll()
+      .then(response => {
+        setPersons(response.data)
       })
-  }, [])
+  }
 
   const addPerson = event => {
     event.preventDefault()
     const personObject = {
       name: newName,
-      number: newNumber,
-      id: persons.length + 1
+      number: newNumber
     }
-
     if (persons.some(person => person.name === newName)) {
       alert(`${newName} is already added to phonebook. Replace the old number?`)
       changeNumber(personObject)
@@ -38,15 +37,18 @@ const App = () => {
       personService
       .create(personObject)
       .then(response => {
+        setPersons(persons.concat(personObject))
+        setNewName('')
+        setNewNumber('')
         console.log(response)
         setPopup(`added ${newName}`)
         setTimeout(() => {
           setPopup(null)
         }, 1000)
+      })     
+      .catch(error => {
+        console.log(error.response.data)
       })
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
     }
   }
 
@@ -70,6 +72,7 @@ const App = () => {
 
   const handleDeletePerson = person => {
     if (window.confirm('Are you sure?')) {
+      console.log(person)
       personService
       .deletePerson(person.id)
       .then(response => {
@@ -107,6 +110,8 @@ const App = () => {
       setNewName('')
       setNewNumber('')
   }
+
+  useEffect(getPersons, [])
 
   return (
     <div>
