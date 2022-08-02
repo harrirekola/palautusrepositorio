@@ -7,7 +7,17 @@ const totalLikes = blogs => {
     return total
 }
 
+const favoriteBlog = blogs => {
+    const mostLiked = blogs.find(
+        blog => blog.likes === Math.max(
+            ...blogs.map(blogpost => blogpost.likes)))
+    const format = ({author, title, likes}) => ({author, title, likes})
+    const formatted = format(mostLiked)
+    return formatted
+}
+
 module.exports = {
     dummy,
-    totalLikes
+    totalLikes,
+    favoriteBlog
 }
