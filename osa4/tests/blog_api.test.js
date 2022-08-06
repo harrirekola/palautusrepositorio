@@ -35,13 +35,6 @@ const initialBlogs = [
       likes: 10,
     },
     {
-      _id: "5a422ba71b54a676234d17fb",
-      title: "TDD harms architecture",
-      author: "Robert C. Martin",
-      url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
-      likes: 0,
-    },
-    {
       _id: "5a422bc61b54a676234d17fc",
       title: "Type wars",
       author: "Robert C. Martin",
@@ -67,6 +60,33 @@ test('blog has id field', async () => {
     const response = await api.get('/api/blogs')
     response.body.forEach(blog => {
         expect(blog.id).toBeDefined()
+    })
+})
+
+test('ability to post blogs', async () => {
+    const newBlog = {
+        _id: "5a422ba71b54a676234d17fb",
+        title: "TDD harms architecture",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+        likes: 0,
+    }
+
+    await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(response.body[response.body.length - 1]).toEqual({
+        id: "5a422ba71b54a676234d17fb",
+        title: "TDD harms architecture",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
+        likes: 0,
     })
 })
 
