@@ -96,7 +96,6 @@ test('if likes has no value set it to 0', async () => {
     title: "TDD harms architecture",
     author: "Robert C. Martin",
     url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
-    likes: null
     }
 
     await api
@@ -114,6 +113,18 @@ test('if likes has no value set it to 0', async () => {
         url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
         likes: 0,
     })
+})
+
+test('if title and url is null', async () => {
+    const newBlog = {
+        _id: "5a422ba71b54a676234d17fb",
+        author: "Robert C. Martin",
+        likes: 0
+    }
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
 })
 
 afterAll(() => {
