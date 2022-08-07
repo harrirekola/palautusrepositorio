@@ -4,8 +4,8 @@ const Blog = require('../models/blog')
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
   response.json(blogs)
-  })
-  
+})
+
 blogsRouter.post('/', async (request, response) => {
   try {
     const blog = new Blog(request.body)
@@ -14,6 +14,6 @@ blogsRouter.post('/', async (request, response) => {
   } catch (error) {
     response.status(400).end()
   }
-  })
+})
 
 module.exports = blogsRouter
