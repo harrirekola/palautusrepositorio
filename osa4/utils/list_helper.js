@@ -1,4 +1,3 @@
-const { groupBy, concat, forEach } = require('lodash')
 const _= require('lodash')
 
 const dummy = blogs => {
@@ -13,7 +12,7 @@ const totalLikes = blogs => {
 const favoriteBlog = blogs => {
     const mostLiked = blogs.find(
         blog => blog.likes === Math.max(
-        ...blogs.map(blogpost => blogpost.likes)))
+            ...blogs.map(blogpost => blogpost.likes)))
     const format = ({author, title, likes}) => ({author, title, likes})
     const formatted = format(mostLiked)
     return formatted
@@ -23,7 +22,7 @@ const mostBlogs = blogs => {
     const authorList = _.uniq(blogs.map(blog => blog.author))
     const authors = blogs.map(blog => blog.author)
     const blogsPerAuthor = authorList.reduce((accumulator, value) => {
-        return {...accumulator, [value]: 0}
+        return { ...accumulator, [value]: 0 }
     }, {})
     for (let i = 0; i < authorList.length; i++) {
         authors.forEach(val => {
@@ -38,9 +37,9 @@ const mostBlogs = blogs => {
         Object.fromEntries
     ])(blogsPerAuthor)
     return {
-        author: Object.keys(result)[0], 
+        author: Object.keys(result)[0],
         blogs: Object.values(result)[0]
-        }
+    }
 }
 
 const mostLikes = blogs => {
@@ -54,7 +53,7 @@ const mostLikes = blogs => {
         }
     })
     for (var prop in holder) {
-        obj2.push({ author: prop, likes: holder[prop] });
+        obj2.push({ author: prop, likes: holder[prop] })
     }
     console.log(obj2)
     return obj2.find(x => x.likes === Math.max(...obj2.map(o => o.likes)))
