@@ -93,7 +93,6 @@ test('if title and url is null', async () => {
 test('of blog deletion', async () => {
     const response = await helper.notesInDb()
     const blogToDelete = response[0].id
-    console.log(blogToDelete)
 
     await api
         .delete(`/api/blogs/${blogToDelete}`)

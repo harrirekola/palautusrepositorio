@@ -26,10 +26,10 @@ const mostBlogs = blogs => {
         allAuthors[author]++
         return allAuthors
     }, {})
-
+    const author = (_.max(Object.entries(blogsPerAuthor)))
     return {
-        "author": _.max(Object.keys(blogsPerAuthor), o => blogsPerAuthor[o]),
-        "blogs": _.max(Object.values(blogsPerAuthor), o => blogsPerAuthor[o])
+        "author": author[0],
+        "blogs": author[1]
     }
 }
 
@@ -46,7 +46,7 @@ const mostLikes = blogs => {
     for (var prop in holder) {
         likesPerAuthor.push({ author: prop, likes: holder[prop] })
     }
-    console.log(likesPerAuthor)
+
     return likesPerAuthor.find(x => x.likes === Math.max(...likesPerAuthor.map(o => o.likes)))
 }
 
