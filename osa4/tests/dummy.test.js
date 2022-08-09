@@ -186,10 +186,7 @@ describe ('most likes', () => {
       __v: 0
     }  
   ]
-  test('when there are two most liked blogs', () => {
-    const result = listHelper.favoriteBlog(twoMostLiked)
-    expect(result).toEqual({"author": "Edsger W. Dijkstra", "likes": 12, "title": "Canonical string reduction"})
-  })
+  
   test('when the list has a most liked blog', () => {
     const result = listHelper.favoriteBlog(blogs)
     expect(result).toEqual({"author": "Edsger W. Dijkstra", "likes": 12, "title": "Canonical string reduction"})
