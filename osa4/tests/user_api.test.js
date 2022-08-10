@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const supertest = require('supertest')
 const User = require("../models/user")
 const app = require('../app')
@@ -36,7 +35,7 @@ describe('No invalid users are created', () => {
             .send(newUser)
             .expect(400)
     })
-    test('User is missing password', async () => {
+    test('Password is missing', async () => {
 
         const newUser = {
             "username": "man",
