@@ -21,5 +21,11 @@ const create = async newObject => {
   return response.data
 }
 
+const updateLike = async (id, blogObject) => {
+  console.log(blogObject)
+  const request = await axios.put(`/api/blogs/${id}`, blogObject)
+  const response = request
+  return response.data
+}
 
-export default { getAll, create, setToken }
+export default { getAll, create, setToken, updateLike }

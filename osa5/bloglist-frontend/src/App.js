@@ -15,6 +15,11 @@ const App = () => {
 
   const blogFormRef = useRef()
 
+  const getAllBlogs = async () => {
+    const blogs = await blogService.getAll()
+    setBlogs(blogs)
+  }
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
@@ -61,6 +66,7 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 3500)
+      getAllBlogs()
       setBlogs(blogs.concat(newBlog))
     } catch (exception) {
       console.log(exception)
