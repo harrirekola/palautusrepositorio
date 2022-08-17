@@ -22,6 +22,7 @@ const Blog = ({ blog, updateBlog }) => {
       url: blog.url
     })
   }
+  
   return (
     showAll ? 
     <div style={blogStyle}>
