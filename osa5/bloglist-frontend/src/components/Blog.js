@@ -1,8 +1,8 @@
-import { useState } from 'react'
-import blogService from '../services/blogs'
+import React, { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const [showAll, setShowAll] = useState(false)
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -11,16 +11,16 @@ const Blog = ({ blog }) => {
     marginBottom: 5
   }
   
-  const updateLike = async event => {
-    event.preventDefault()
-    const newBlog = {
-      author: blog.author,
+  const updateLike = () => {
+    console.log('liked blog: ', blog.id)
+    updateBlog(blog.id,
+      {
+      user: blog.user.id,
       likes: blog.likes + 1,
+      author: blog.author,
       title: blog.title,
-      url: blog.url,
-      id: blog.user.id
-    }
-    await blogService.updateLike(blog.id, newBlog)
+      url: blog.url
+    })
   }
   return (
     showAll ? 

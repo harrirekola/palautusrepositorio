@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -54,6 +54,15 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 3500)
+    }
+  }
+
+  const updateBlog = async (id, blogObject) => {
+    try {
+      await blogService.updateLike(id, blogObject)
+      getAllBlogs()
+    } catch (exception) {
+      console.log(exception)
     }
   }
 
@@ -124,7 +133,7 @@ const App = () => {
         <BlogForm createBlog={addBlog}/>
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
       )}
     </div>
   )
