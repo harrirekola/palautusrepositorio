@@ -10,7 +10,7 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
- 
+
   const updateLike = () => {
     console.log('liked blog: ', blog.id)
     updateBlog(blog.id,

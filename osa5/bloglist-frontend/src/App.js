@@ -19,7 +19,6 @@ const App = () => {
     const blogs = await blogService.getAll()
     const sortLikes = [...blogs].sort((a,b) => b.likes - a.likes)
     setBlogs(sortLikes)
-    
   }
 
   useEffect(() => {
@@ -92,7 +91,7 @@ const App = () => {
       console.log(exception)
     }
   }
-  
+
   const handleLogout = async event => {
     event.preventDefault()
     console.log('logging out...')
@@ -108,7 +107,7 @@ const App = () => {
         <form onSubmit={handleLogin}>
           <div>
             username
-              <input
+            <input
               type='text'
               value={username}
               name='Username'
@@ -117,11 +116,11 @@ const App = () => {
           </div>
           <div>
             password
-              <input
+            <input
               type='password'
               value={password}
               name='Password'
-              onChange={({ target}) => setPassword(target.value)}
+              onChange={({ target }) => setPassword(target.value)}
             />
             <div>
               <button type='submit'>login</button>
