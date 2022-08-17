@@ -10,17 +10,17 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  
+ 
   const updateLike = () => {
     console.log('liked blog: ', blog.id)
     updateBlog(blog.id,
       {
-      user: blog.user.id,
-      likes: blog.likes + 1,
-      author: blog.author,
-      title: blog.title,
-      url: blog.url
-    })
+        user: blog.user.id,
+        likes: blog.likes + 1,
+        author: blog.author,
+        title: blog.title,
+        url: blog.url
+      })
   }
 
   const removeBlog = () => {
@@ -29,18 +29,18 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
   }
 
   return (
-    showAll ? 
-    <div style={blogStyle}>
-      <p>{blog.title} {blog.author} <button onClick={() => setShowAll(isShowAll => !isShowAll)}>hide</button></p>
-      <p>{blog.url}</p>
-      <p>likes {blog.likes} <button onClick={updateLike}>like</button></p>
-      <p>{blog.user.name}</p>
-      <button onClick={removeBlog}>remove</button>
-    </div>
-    :
-    <div style={blogStyle}>
-      <p>{blog.title} {blog.author} <button onClick={() => setShowAll(isShowAll => !isShowAll)}>view</button></p>
-    </div>
+    showAll ?
+      <div style={blogStyle}>
+        <p>{blog.title} {blog.author} <button onClick={() => setShowAll(isShowAll => !isShowAll)}>hide</button></p>
+        <p>{blog.url}</p>
+        <p>likes {blog.likes} <button onClick={updateLike}>like</button></p>
+        <p>{blog.user.name}</p>
+        <button onClick={removeBlog}>remove</button>
+      </div>
+      :
+      <div style={blogStyle}>
+        <p>{blog.title} {blog.author} <button onClick={() => setShowAll(isShowAll => !isShowAll)}>view</button></p>
+      </div>
   )
 }
 
