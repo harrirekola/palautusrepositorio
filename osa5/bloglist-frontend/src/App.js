@@ -68,6 +68,15 @@ const App = () => {
     }
   }
 
+  const deleteBlog = async (id, blogUser) => {
+    try {
+      await blogService.removeBlog(id, blogUser)
+      getAllBlogs()
+    } catch (exception) {
+      console.log(exception)
+    }
+  }
+
   const addBlog = async blogObject => {
     blogFormRef.current.toggleVisibility()
     try {
@@ -135,7 +144,7 @@ const App = () => {
         <BlogForm createBlog={addBlog}/>
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog} />
       )}
     </div>
   )
