@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const Blog = ({ blog, updateBlog, deleteBlog }) => {
+const Blog = ({ blog, updateBlog, deleteBlog, currentUser }) => {
   const [showAll, setShowAll] = useState(false)
+  const [visibilityState, setVisibilityState] = useState(false)
 
   const blogStyle = {
     paddingTop: 10,
@@ -10,6 +11,13 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+
+  useEffect(()=> {
+    if (blog.user.username === currentUser.username) {
+      console.log('abi')
+      setVisibilityState(true)
+    }
+  })
 
   const updateLike = () => {
     console.log('liked blog: ', blog.id)
@@ -35,7 +43,7 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
         <p>{blog.url}</p>
         <p>likes {blog.likes} <button onClick={updateLike}>like</button></p>
         <p>{blog.user.name}</p>
-        <button onClick={removeBlog}>remove</button>
+        <button onClick={removeBlog} style={{display: visibilityState ? 'block' : 'none'}}>remove</button>
       </div>
       :
       <div style={blogStyle}>
