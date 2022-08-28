@@ -14,7 +14,6 @@ const Blog = ({ blog, updateBlog, deleteBlog, currentUser }) => {
 
   useEffect(()=> {
     if (blog.user.username === currentUser.username) {
-      console.log('abi')
       setVisibilityState(true)
     }
   })
@@ -38,16 +37,16 @@ const Blog = ({ blog, updateBlog, deleteBlog, currentUser }) => {
 
   return (
     showAll ?
-      <div style={blogStyle}>
+      <div id='blog' style={blogStyle}>
         <p>{blog.title} {blog.author} <button onClick={() => setShowAll(isShowAll => !isShowAll)}>hide</button></p>
         <p>{blog.url}</p>
-        <p>likes {blog.likes} <button onClick={updateLike}>like</button></p>
+        <p>likes {blog.likes} <button id='like-button' onClick={updateLike}>like</button></p>
         <p>{blog.user.name}</p>
-        <button onClick={removeBlog} style={{display: visibilityState ? 'block' : 'none'}}>remove</button>
+        <button id='remove-button' onClick={removeBlog} style={{display: visibilityState ? 'block' : 'none'}}>remove</button>
       </div>
       :
       <div style={blogStyle}>
-        <p>{blog.title} {blog.author} <button onClick={() => setShowAll(isShowAll => !isShowAll)}>view</button></p>
+        <p>{blog.title} {blog.author} <button id='view-button' onClick={() => setShowAll(isShowAll => !isShowAll)}>view</button></p>
       </div>
   )
 }
