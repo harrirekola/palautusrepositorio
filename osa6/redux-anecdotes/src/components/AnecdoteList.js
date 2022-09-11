@@ -7,6 +7,9 @@ const AnecdoteList = () => {
 		const arrangedByVotes = [...anecdotes].sort((a, b) => (a.votes > b.votes) ? -1 : 1)
 		return arrangedByVotes
 	})
+  const keyword = useSelector(state => state.filter)
+  const filtered = anecdotes.filter(item => item.content.includes(keyword))
+  console.log(anecdotes)
 
   const vote = anecdote => {
     dispatch(votedAnecdote(anecdote.id))
@@ -19,7 +22,7 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
     return (
         <div>
-          {anecdotes.map(anecdote =>
+          {filtered.map(anecdote =>
             <div key={anecdote.id}>
               <div>
                 {anecdote.content}
