@@ -4,7 +4,7 @@ import { notify, resetNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
   const anecdotes = useSelector(({anecdotes}) => {
-		const arrangedByVotes = [...anecdotes].sort((a, b) => (a.votes > b.votes) ? -1 : 1)
+		const arrangedByVotes = [...anecdotes].sort((a, b) => (b.votes - a.votes))
 		return arrangedByVotes
 	})
   const keyword = useSelector(state => state.filter)
