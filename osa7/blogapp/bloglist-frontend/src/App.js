@@ -7,7 +7,7 @@ import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
 import { useDispatch, useSelector } from 'react-redux'
 import { notify, clear } from "./reducers/notificationReducer";
-import { initializeBlogs, addBlogs } from "./reducers/blogReducer";
+import { initializeBlogs, addBlogs, updateBlogs, deleteBlogs } from "./reducers/blogReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -21,7 +21,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs());
-  }, [blogs]);
+  }, [dispatch]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
@@ -54,31 +54,15 @@ const App = () => {
   };
 
   const updateBlog = async (id, blogObject) => {
-    try {
-      await blogService.updateLike(id, blogObject);
-    } catch (exception) {
-      console.log(exception);
-    }
+    dispatch(updateBlogs(id, blogObject))
   };
 
   const deleteBlog = async (id, blogUser) => {
-    try {
-      await blogService.removeBlog(id, blogUser);
-    } catch (exception) {
-      console.log(exception);
-    }
+    dispatch(deleteBlogs(id, blogUser))
   };
 
-  const addBlog = async (blogObject) => {
-    blogFormRef.current.toggleVisibility();
+  const addBlog = async blogObject => {
     dispatch(addBlogs(blogObject))
-    console.log("Added a new blog ", JSON.stringify(blogObject));
-    dispatch(notify(
-    `a new blog ${blogObject.title} by ${blogObject.author} has been added`
-    ));
-    setTimeout(() => {
-      dispatch(clear());
-    }, 3500);
   };
 
   const handleLogout = async (event) => {
