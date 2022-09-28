@@ -10,6 +10,12 @@ import { notify, clear } from "./reducers/notificationReducer";
 import { setUsers, logoutUser } from "./reducers/userReducer";
 import { initializeBlogs, addBlogs, updateBlogs, deleteBlogs } from "./reducers/blogReducer";
 import userService from './services/user'
+import UserForm from "./components/UserForm";
+import { initialUsers } from "./reducers/usersReducer";
+import {
+  BrowserRouter as Router,
+  Routes, Route, Link
+} from "react-router-dom"
 
 const App = () => {
   const blogFormRef = useRef();
@@ -20,6 +26,10 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(initialUsers());
   }, [dispatch]);
 
   useEffect(() => {
@@ -75,26 +85,37 @@ const App = () => {
     </>
   }
 
+  const Home = () => {
+    return (
+    <div>
+    <Togglable buttonLabel="new blog" ref={blogFormRef}>
+      <BlogForm createBlog={addBlog} />
+    </Togglable>
+    {sortLikes.map((blog) => (
+      <Blog
+        key={blog.id}
+        blog={blog}
+        updateBlog={updateBlog}
+        deleteBlog={deleteBlog}
+        currentUser={user}
+      />
+    ))}
+  </div>
+  )
+  };
+
   return (
     <div>
-      <h2>blogs</h2>
-      <Notification />
-      <p>
-        Logged in as {user.name}
-        <button onClick={logout}>logout</button>
-      </p>
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm createBlog={addBlog} />
-      </Togglable>
-      {sortLikes.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          updateBlog={updateBlog}
-          deleteBlog={deleteBlog}
-          currentUser={user}
-        />
-      ))}
+    <h2>blogs</h2>
+    <Notification />
+    <p>
+      Logged in as {user.name}
+      <button onClick={logout}>logout</button>
+    </p>
+      <Routes>
+        <Route path='/users' element={<UserForm />} />
+        <Route path='/' element={<Home />} />
+      </Routes>
     </div>
   );
 };
