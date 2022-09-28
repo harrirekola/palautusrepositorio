@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import blogService from '../services/blogs'
 
 const userSlice = createSlice({
     name: 'user',
@@ -14,5 +15,11 @@ const userSlice = createSlice({
 })
 
 export const  { setUsers, logoutUser } = userSlice.actions
+
+export const setTokens = (user) => {
+    return async dispatch => {
+        blogService.setToken(user.token)
+    }
+}
 
 export default userSlice.reducer

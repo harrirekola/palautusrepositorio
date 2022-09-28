@@ -7,21 +7,24 @@ import Togglable from "./components/Togglable";
 import LoginForm from './components/LoginForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { notify, clear } from "./reducers/notificationReducer";
-import { setUsers, logoutUser } from "./reducers/userReducer";
+import { setUsers, logoutUser, setTokens } from "./reducers/userReducer";
 import { initializeBlogs, addBlogs, updateBlogs, deleteBlogs } from "./reducers/blogReducer";
 import userService from './services/user'
+import blogService from './services/blogs'
 import UserForm from "./components/UserForm";
 import { initialUsers } from "./reducers/usersReducer";
 import {
   BrowserRouter as Router,
   Routes, Route, Link
 } from "react-router-dom"
+import User from "./components/User";
 
 const App = () => {
   const blogFormRef = useRef();
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
+  console.log(user)
   const sortLikes = [...blogs].sort((a, b) => b.likes - a.likes);
 
   useEffect(() => {
@@ -36,6 +39,7 @@ const App = () => {
     const userFromStorage = userService.getUser()
     if (userFromStorage) {
       dispatch(setUsers(userFromStorage))
+      dispatch(setTokens(userFromStorage))
     }
   }, [])
 
@@ -45,6 +49,7 @@ const App = () => {
     }).then(user => {
       dispatch(setUsers(user))
       userService.setUser(user)
+      dispatch(setTokens(user))
       dispatch(notify(`${user.name} logged in!`))
       setTimeout(() => {
         dispatch(clear());
@@ -75,6 +80,7 @@ const App = () => {
   };
 
   const addBlog = async blogObject => {
+    console.log(blogObject)
     dispatch(addBlogs(blogObject))
   };
 
@@ -115,6 +121,7 @@ const App = () => {
       <Routes>
         <Route path='/users' element={<UserForm />} />
         <Route path='/' element={<Home />} />
+        <Route path='/users/:id' element={<User />} />
       </Routes>
     </div>
   );
