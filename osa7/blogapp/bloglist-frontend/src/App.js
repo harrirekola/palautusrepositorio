@@ -1,22 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
-import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 import Togglable from "./components/Togglable";
+import LoginForm from './components/LoginForm'
 import { useDispatch, useSelector } from 'react-redux'
 import { notify, clear } from "./reducers/notificationReducer";
+import { setUsers, logoutUser } from "./reducers/userReducer";
 import { initializeBlogs, addBlogs, updateBlogs, deleteBlogs } from "./reducers/blogReducer";
+import userService from './services/user'
 
 const App = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
-
   const blogFormRef = useRef();
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.user)
   const sortLikes = [...blogs].sort((a, b) => b.likes - a.likes);
 
   useEffect(() => {
@@ -24,34 +23,38 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser");
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setUser(user);
-      blogService.setToken(user.token);
+    const userFromStorage = userService.getUser()
+    if (userFromStorage) {
+      dispatch(setUsers(userFromStorage))
     }
-  }, []);
+  }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    console.log("logging in with", username, password);
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-      blogService.setToken(user.token);
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-      setUser(user);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      dispatch(notify("wrong username or password"))
+  const login = async (username, password) => {
+    loginService.login({
+      username, password,
+    }).then(user => {
+      dispatch(setUsers(user))
+      userService.setUser(user)
+      dispatch(notify(`${user.name} logged in!`))
       setTimeout(() => {
         dispatch(clear());
       }, 3500);
-    }
-  };
+    }).catch(() => {
+      dispatch(notify('wrong username/password'))
+      setTimeout(() => {
+        dispatch(clear());
+      }, 3500);
+    })
+  }
+
+  const logout = () => {
+    dispatch(logoutUser())
+    userService.clearUser()
+    dispatch(notify('good bye!'))
+    setTimeout(() => {
+      dispatch(clear());
+    }, 3500);
+  }
 
   const updateBlog = async (id, blogObject) => {
     dispatch(updateBlogs(id, blogObject))
@@ -65,47 +68,11 @@ const App = () => {
     dispatch(addBlogs(blogObject))
   };
 
-  const handleLogout = async (event) => {
-    event.preventDefault();
-    console.log("logging out...");
-    window.localStorage.removeItem("loggedBlogappUser");
-    setUser(null);
-  };
-
   if (user === null) {
-    return (
-      <div>
-        <h2>Log in to application</h2>
-        <Notification />
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              id="username"
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-            <input
-              id="password"
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-            <div>
-              <button id="login-button" type="submit">
-                login
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    );
+    return <>
+      <Notification />
+      <LoginForm onLogin={login} />
+    </>
   }
 
   return (
@@ -114,7 +81,7 @@ const App = () => {
       <Notification />
       <p>
         Logged in as {user.name}
-        <button onClick={handleLogout}>logout</button>
+        <button onClick={logout}>logout</button>
       </p>
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm createBlog={addBlog} />
