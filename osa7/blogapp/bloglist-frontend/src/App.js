@@ -83,6 +83,10 @@ const App = () => {
     dispatch(addBlogs(blogObject))
   };
 
+  const padding = {
+    padding: 5
+  }
+
   if (user === null) {
     return <>
       <Notification />
@@ -114,6 +118,8 @@ const App = () => {
     <h2>blogs</h2>
     <Notification />
     <p>
+      <Link style={padding} to='/'>blogs</Link>
+      <Link style={padding} to='/users'>users</Link>
       Logged in as {user.name}
       <button onClick={logout}>logout</button>
     </p>
