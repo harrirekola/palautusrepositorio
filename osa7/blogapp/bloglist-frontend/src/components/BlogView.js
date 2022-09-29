@@ -10,7 +10,7 @@ const BlogView = () => {
     return (
         <div>
             <h2>{blog.title}</h2>
-            <a>{blog.url}</a>
+            <p>{blog.url}</p>
             <p>{blog.likes} likes</p>
             <p>added by {blog.user.name}</p>
         </div>

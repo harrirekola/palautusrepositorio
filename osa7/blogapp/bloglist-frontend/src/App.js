@@ -18,13 +18,13 @@ import {
 } from "react-router-dom"
 import User from "./components/User";
 import BlogView from "./components/BlogView";
+import { AppBar, Container, Toolbar, Button } from "@mui/material";
 
 const App = () => {
   const blogFormRef = useRef();
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
-  console.log(user)
   const sortLikes = [...blogs].sort((a, b) => b.likes - a.likes);
 
   useEffect(() => {
@@ -114,12 +114,21 @@ const App = () => {
   };
 
   return (
+    <Container>
+      <AppBar position='static'>
+        <Toolbar>
+          <Button color="inherit" component={Link} to="/">
+            home
+          </Button>
+          <Button color="inherit" component={Link} to="/users">
+            users
+          </Button>
+        </Toolbar>
+      </AppBar>
     <div>
     <h2>blogs</h2>
     <Notification />
     <p>
-      <Link style={padding} to='/'>blogs</Link>
-      <Link style={padding} to='/users'>users</Link>
       Logged in as {user.name}
       <button onClick={logout}>logout</button>
     </p>
@@ -130,6 +139,7 @@ const App = () => {
         <Route path='/blogs/:id' element={<BlogView />} />
       </Routes>
     </div>
+    </Container>
   );
 };
 
