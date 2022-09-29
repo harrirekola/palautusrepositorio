@@ -10,7 +10,6 @@ import { notify, clear } from "./reducers/notificationReducer";
 import { setUsers, logoutUser, setTokens } from "./reducers/userReducer";
 import { initializeBlogs, addBlogs, updateBlogs, deleteBlogs } from "./reducers/blogReducer";
 import userService from './services/user'
-import blogService from './services/blogs'
 import UserForm from "./components/UserForm";
 import { initialUsers } from "./reducers/usersReducer";
 import {
@@ -18,6 +17,7 @@ import {
   Routes, Route, Link
 } from "react-router-dom"
 import User from "./components/User";
+import BlogView from "./components/BlogView";
 
 const App = () => {
   const blogFormRef = useRef();
@@ -80,7 +80,6 @@ const App = () => {
   };
 
   const addBlog = async blogObject => {
-    console.log(blogObject)
     dispatch(addBlogs(blogObject))
   };
 
@@ -97,7 +96,7 @@ const App = () => {
     <Togglable buttonLabel="new blog" ref={blogFormRef}>
       <BlogForm createBlog={addBlog} />
     </Togglable>
-    {sortLikes.map((blog) => (
+    {sortLikes.map(blog => (
       <Blog
         key={blog.id}
         blog={blog}
@@ -122,6 +121,7 @@ const App = () => {
         <Route path='/users' element={<UserForm />} />
         <Route path='/' element={<Home />} />
         <Route path='/users/:id' element={<User />} />
+        <Route path='/blogs/:id' element={<BlogView />} />
       </Routes>
     </div>
   );

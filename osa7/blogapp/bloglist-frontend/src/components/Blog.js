@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog, updateBlog, deleteBlog, currentUser }) => {
   const [showAll, setShowAll] = useState(false);
@@ -61,7 +62,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, currentUser }) => {
   ) : (
     <div style={blogStyle}>
       <p>
-        {blog.title} {blog.author}{" "}
+        <Link to={`blogs/${blog.id}`}>{blog.title} {blog.author}{" "}</Link>
         <button
           id="view-button"
           onClick={() => setShowAll((isShowAll) => !isShowAll)}
