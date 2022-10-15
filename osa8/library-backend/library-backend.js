@@ -61,6 +61,7 @@ const typeDefs = gql`
     ): Author
     createUser(
       username: String!
+      favoriteGenre: String!
     ): User
     login(
       username: String!
@@ -77,7 +78,8 @@ const resolvers = {
       if (!args.author && !args.genre) {
         return await Book.find({})
       } else if (!args.author) {
-        return await Book.find( { genre: { $in: [args.genre] } } )
+        const books = await Book.find({})
+        return books.filter(book => book.genres.includes(args.genre))
       } else if (!args.genre) {
         const author = await Author.findOne({ name: args.author })
         return await Book.find({ author: author._id })
@@ -111,11 +113,10 @@ const resolvers = {
   Mutation: {
     addBook: async (root, args, context) => {
       const currentUser = context.currentUser
-
+      console.log(currentUser)
       if (!currentUser) {
         throw new AuthenticationError("not authenticated")
       }
-
       const author = new Author({
         name: args.author,
         born: null
@@ -138,12 +139,11 @@ const resolvers = {
     },
     editAuthor: async (root, args, context) => {
       const currentUser = context.currentUser
-
       if (!currentUser) {
         throw new AuthenticationError("not authenticated")
       }
 
-      const author = await Author.findOne({ author: args.name})
+      const author = await Author.findOne({ name: args.name})
 
       if (!author) {
         return null
@@ -170,7 +170,6 @@ const resolvers = {
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username})
-      console.log(user)
       if ( !user || args.password !== 'secret' ) {
         throw new UserInputError("wrong credentials")
       }
@@ -185,6 +184,7 @@ const resolvers = {
 }
 
 const server = new ApolloServer({
+  
   typeDefs,
   resolvers,
   context: async ({ req }) => {
@@ -195,7 +195,6 @@ const server = new ApolloServer({
       )
       const currentUser = await User
         .findById(decodedToken.id)
-      console.log(currentUser)
       return { currentUser }
     }
   }

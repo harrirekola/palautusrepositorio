@@ -11,7 +11,7 @@ const Authors = props => {
   const result = useQuery(ALL_AUTHORS, {
     pollInterval: 500
   })
-  
+
   if (!props.show) {
     return null
   }
@@ -73,7 +73,7 @@ const Authors = props => {
             onChange={({ target }) => setYear(target.value)}
           />
         </div>
-        <button type='submit' value='submit'>update author</button>
+        <button type='submit'>update author</button>
       </form>
     </div>
   )
