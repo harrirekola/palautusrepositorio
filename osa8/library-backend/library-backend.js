@@ -43,6 +43,7 @@ const typeDefs = gql`
   },
   type User {
     username: String!,
+    favoriteGenre: String!
     id: ID!
   },
   type Token {
@@ -91,6 +92,7 @@ const resolvers = {
     },
     allAuthors: async () => await Author.find({}),
     me: (root, args, context) => {
+      console.log(context.currentUser)
       return context.currentUser
     }
   },
@@ -160,7 +162,9 @@ const resolvers = {
       return author
     },
     createUser: async (root, args) => {
-      const user = new User({...args})
+      console.log(args)
+      const user = new User({username: args.username, favoriteGenre: args.favoriteGenre})
+      console.log(user)
       return user.save()
       .catch(error => {
         throw new UserInputError(error.message, {
