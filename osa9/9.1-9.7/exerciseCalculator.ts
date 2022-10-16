@@ -1,3 +1,5 @@
+export {}
+
 interface Results {
     periodLength: number,
     trainingDays: number,
@@ -9,7 +11,28 @@ interface Results {
 
 }
 
-const calculateExercises = (hours: Array<number>, targetValue: number): Results => {
+interface Values {
+    value1: Array<number>,
+    value2: number
+}
+
+const parseArguments = (args: Array<string>): Values => {
+    if (args.length < 4) throw new Error('Not enough arguments')
+
+    const hours = args.slice(3)
+    const allArgs = args.slice(2).map(Number)
+
+    if (!allArgs.some(isNaN)) {
+        return {
+            value1: hours.map(Number),
+            value2: Number(args[2])
+        }
+    } else {
+        throw new Error('Provided values were not numbers!')
+    }
+}
+
+const calculateExercises = (hours: Array<number>, targetValue: number) => {
 
     const sum = hours.reduce((partialSum, a) => partialSum + a, 0)
     let ratingString = ''
@@ -37,7 +60,7 @@ const calculateExercises = (hours: Array<number>, targetValue: number): Results 
         }
     }
 
-    return {
+    console.log({
         periodLength: hours.length,
         trainingDays: hours.filter(x => x > 0).length,
         success: targetSuccess(),
@@ -45,7 +68,16 @@ const calculateExercises = (hours: Array<number>, targetValue: number): Results 
         ratingDescription: ratingString,
         target: targetValue,
         average: sum / hours.length
-    }
+    })
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try {
+    const { value1, value2 } = parseArguments(process.argv)
+    calculateExercises(value1, value2)
+} catch (error: unknown) {
+    let errorMessage = 'Something bad happened.'
+    if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+    }
+  console.log(errorMessage)
+}
