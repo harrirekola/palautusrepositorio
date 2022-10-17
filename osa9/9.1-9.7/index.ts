@@ -31,7 +31,7 @@ app.post('/exercises', (req, res) => {
     }
 
     try {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
         res.json(calculateExercises(req.body.daily_exercises, req.body.target));
     } catch (error) {
         res.json({ error: 'malformatted parameters'});
