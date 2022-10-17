@@ -1,6 +1,6 @@
 export {};
 
-/*
+
 interface Results {
     periodLength: number,
     trainingDays: number,
@@ -11,7 +11,7 @@ interface Results {
     average: number
 
 }
-*/
+
 
 interface Values {
     value1: Array<number>,
@@ -19,7 +19,7 @@ interface Values {
 }
 
 const parseArguments = (args: Array<string>): Values => {
-    if (args.length < 4) throw new Error('Not enough arguments');
+    if (args.length < 2) throw new Error('Not enough arguments');
 
     const hours = args.slice(3);
     const allArgs = args.slice(2).map(Number);
@@ -34,7 +34,7 @@ const parseArguments = (args: Array<string>): Values => {
     }
 };
 
-const calculateExercises = (hours: Array<number>, targetValue: number) => {
+const calculateExercises = (hours: Array<number>, targetValue: number): Results => {
 
     const sum = hours.reduce((partialSum, a) => partialSum + a, 0);
     let ratingString = '';
@@ -62,7 +62,7 @@ const calculateExercises = (hours: Array<number>, targetValue: number) => {
         }
     };
 
-    console.log({
+    return{
         periodLength: hours.length,
         trainingDays: hours.filter(x => x > 0).length,
         success: targetSuccess(),
@@ -70,7 +70,7 @@ const calculateExercises = (hours: Array<number>, targetValue: number) => {
         ratingDescription: ratingString,
         target: targetValue,
         average: sum / hours.length
-    });
+    };
 };
 
 try {
@@ -83,3 +83,5 @@ try {
     }
   console.log(errorMessage);
 }
+
+export default calculateExercises;
