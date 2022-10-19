@@ -9,7 +9,15 @@ router.get('/', (_req: Request, res: Response) => {
     res.send(patientService.getEntryWithoutSsn());
 });
 
-router.post('/', (req, res) => {
+router.get('/:id', (req: Request, res: Response) => {
+    const patients = patientService.getEntries();
+    const id = req.params.id;
+    const patient = patients.find(patient => patient.id === id);
+    res.send(patient);
+});
+
+
+router.post('/', (req: Request, res: Response) => {
     try {
         const newPatientEntry = toNewPatientEntry(req.body);
 
@@ -23,5 +31,6 @@ router.post('/', (req, res) => {
         res.status(400).send(errorMessage);
     }
 });
+
 
 export default router;

@@ -1,10 +1,10 @@
-import patients from '../../data/patients.json';
 import { v1 as uuid } from 'uuid';
 
-import { EntryWithoutSocial, PatientEntry, NewPatientEntry } from '../types';
+import { PublicPatient, NewPatient, Patient } from '../types';
+import patientEntries from '../../data/patients';
 
-const getEntryWithoutSsn = (): EntryWithoutSocial[] => {
-    return patients.map(({ id, name, dateOfBirth, gender, occupation}) => ({
+const getEntryWithoutSsn = (): PublicPatient[] => {
+    return patientEntries.map(({ id, name, dateOfBirth, gender, occupation}) => ({
         id,
         name,
         dateOfBirth,
@@ -13,18 +13,25 @@ const getEntryWithoutSsn = (): EntryWithoutSocial[] => {
     }));
 };
 
-const addPatient = ( entry: NewPatientEntry ): PatientEntry => {
 
-    const newPatientEntry = {
+const addPatient = ( entry: NewPatient ): Patient => {
+
+    const newPatient = {
         id: uuid(),
         ...entry
     };
 
-    patients.push(newPatientEntry);
-    return newPatientEntry;
+    patientEntries.push(newPatient);
+    return newPatient;
+};
+
+
+const getEntries = () => {
+    return patientEntries;
 };
 
 export default {
     getEntryWithoutSsn,
-    addPatient
+    addPatient,
+    getEntries
 };
