@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Patient } from "../types";
 import { useEffect } from "react";
 import { useStateValue } from "../state";
+import { addViewPatient } from "../state";
 
 const PatientView = () => {
 
@@ -19,7 +20,7 @@ const PatientView = () => {
                 const { data: patientFromApi} = await axios.get<Patient>(
                     `${apiBaseUrl}/patients/${id}`
                 );
-                dispatch({ type: "ADD_PATIENT", payload: patientFromApi });
+                dispatch(addViewPatient(patientFromApi));
             } catch (error) {
                 console.log(error);
             }
