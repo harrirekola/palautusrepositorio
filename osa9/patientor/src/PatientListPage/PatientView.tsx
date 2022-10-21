@@ -2,9 +2,9 @@ import axios from "axios";
 import { apiBaseUrl } from "../constants";
 import { useParams } from "react-router-dom";
 import { Patient } from "../types";
-import { useEffect } from "react";
 import { useStateValue } from "../state";
 import { addViewPatient } from "../state";
+import { useEffect } from "react";
 
 const PatientView = () => {
 
@@ -33,13 +33,20 @@ const PatientView = () => {
           <div>error</div>
         );
     }
-    const patient = (patients[id]);
+
+    const patient = patients[id];
 
     return (
         <div>
-            <h2>{patient.name}</h2>
-            <p>ssn: {patient.ssn}</p>
-            <p>occupation: {patient.occupation}</p>
+            <h2>{patient?.name}</h2>
+            <p>ssn: {patient?.ssn}</p>
+            <p>occupation: {patient?.occupation}</p>
+            <b>entries</b>
+            {patient && patient?.entries?.map(entry => (
+                <div key={entry.id}>
+                    <div>{entry.date} {entry.description}</div>
+                </div>
+            ))}
         </div>
     );
 };
