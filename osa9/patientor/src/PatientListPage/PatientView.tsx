@@ -45,8 +45,16 @@ const PatientView = () => {
             {patient && patient?.entries?.map(entry => (
                 <div key={entry.id}>
                     <div>{entry.date} {entry.description}</div>
+                    <ul>
+                    {entry.diagnosisCodes && entry.diagnosisCodes.map(code => (
+                        <li key={code}>{code}</li>
+                    ))}
+                    </ul>
                 </div>
+
+
             ))}
+
         </div>
     );
 };
