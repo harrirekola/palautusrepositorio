@@ -1,14 +1,14 @@
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
 import { useParams } from "react-router-dom";
-import { Patient } from "../types";
-import { useStateValue } from "../state";
+import { Diagnosis, Patient } from "../types";
+import { setDiagnosis, useStateValue } from "../state";
 import { addViewPatient } from "../state";
 import { useEffect } from "react";
 
 const PatientView = () => {
 
-    const [{ patients }, dispatch] = useStateValue();
+    const [{ patients, diagnosis }, dispatch] = useStateValue();
     const { id } = useParams<{ id: string}>();
 
     useEffect(() => {
@@ -25,17 +25,27 @@ const PatientView = () => {
                 console.log(error);
             }
         };
-        void fetchPatient();        
+        const fetchDiagnoses = async () => {
+            try {
+                const { data: diagnoses } = await axios.get<Diagnosis[]>(
+                    `${apiBaseUrl}/diagnoses`
+                );
+                dispatch(setDiagnosis(diagnoses));
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        void fetchPatient();
+        void fetchDiagnoses(); 
     }, [dispatch]);
 
-    if (id == undefined || patients[id] == undefined) {
+    if (id == undefined || patients[id] == undefined || diagnosis == undefined) {
         return (
           <div>error</div>
         );
     }
 
     const patient = patients[id];
-
     return (
         <div>
             <h2>{patient?.name}</h2>
@@ -46,13 +56,11 @@ const PatientView = () => {
                 <div key={entry.id}>
                     <div>{entry.date} {entry.description}</div>
                     <ul>
-                    {entry.diagnosisCodes && entry.diagnosisCodes.map(code => (
-                        <li key={code}>{code}</li>
+                    {entry.diagnosisCodes && entry.diagnosisCodes.map((code,index) => (
+                        <li key={index}>{code} {diagnosis && diagnosis[code] ? diagnosis[code].name : ''}</li>
                     ))}
                     </ul>
                 </div>
-
-
             ))}
 
         </div>
