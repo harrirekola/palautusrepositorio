@@ -5,6 +5,8 @@ import { Diagnosis, Patient } from "../types";
 import { setDiagnosis, useStateValue } from "../state";
 import { addViewPatient } from "../state";
 import { useEffect } from "react";
+import EntryDetails from "./EntryDetails";
+import { Box } from "@material-ui/core";
 
 const PatientView = () => {
 
@@ -52,17 +54,13 @@ const PatientView = () => {
             <p>ssn: {patient?.ssn}</p>
             <p>occupation: {patient?.occupation}</p>
             <b>entries</b>
+            <Box sx={{ border: 1 }}>
             {patient && patient?.entries?.map(entry => (
                 <div key={entry.id}>
-                    <div>{entry.date} {entry.description}</div>
-                    <ul>
-                    {entry.diagnosisCodes && entry.diagnosisCodes.map((code,index) => (
-                        <li key={index}>{code} {diagnosis && diagnosis[code] ? diagnosis[code].name : ''}</li>
-                    ))}
-                    </ul>
+                    <EntryDetails entry={entry}/>
                 </div>
             ))}
-
+            </Box>
         </div>
     );
 };
