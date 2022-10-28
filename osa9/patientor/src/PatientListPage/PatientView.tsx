@@ -54,7 +54,7 @@ const PatientView = () => {
             <p>ssn: {patient?.ssn}</p>
             <p>occupation: {patient?.occupation}</p>
             <b>entries</b>
-            <Box sx={{ border: 1 }}>
+            <Box border={1}>
             {patient && patient?.entries?.map(entry => (
                 <div key={entry.id}>
                     <EntryDetails entry={entry}/>
