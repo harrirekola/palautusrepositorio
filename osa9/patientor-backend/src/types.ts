@@ -80,5 +80,12 @@ export type Entry =
   | HealthCheckEntry;
 
 export type NewPatient = Omit<Patient, 'id'>;
-
 export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
+export type NewHealthCheckEntry = Omit<HealthCheckEntry, 'id'>;
+export type NewOccupationalHealthcareEntry = Omit<OccupationalHealthcareEntry, 'id'>;
+export type NewHospitalEntry = Omit<HospitalEntry, 'id'>;
+
+export type NewEntry =
+    | NewHealthCheckEntry
+    | NewOccupationalHealthcareEntry
+    | NewHospitalEntry ;
